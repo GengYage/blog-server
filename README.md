@@ -41,4 +41,5 @@ insert into articles (title, content) values ('Hello World', '测试数据');
 ```
 GET /api/rest/articles/v1
 POST /api/rest/article/add/v1
+POST /api/rest/article/update/v1
 ```
