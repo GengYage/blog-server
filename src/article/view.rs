@@ -9,9 +9,8 @@ use crate::{errors::WebError, models::article::Article, AppState};
 
 #[web::get("/api/rest/articles/v1")]
 pub async fn get_articles(state: State<Arc<AppState>>) -> Result<Json<Vec<Article>>, WebError> {
-    let db_pool = &state.db_pool;
     let articles = sqlx::query!("select * from articles order by id")
-        .fetch_all(db_pool)
+        .fetch_all(&state.db_pool)
         .await?
         .iter()
         .map(|result| Article {

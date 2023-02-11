@@ -3,7 +3,7 @@ use std::{env, sync::Arc};
 use ntex::web::{middleware, App, HttpServer};
 use sqlx::{postgres::PgPoolOptions, Pool, Postgres};
 
-use crate::article::{edit, new, view};
+use crate::article::{delete, edit, new, search, view};
 
 mod article;
 mod errors;
@@ -38,6 +38,9 @@ async fn main() {
             .service(view::get_articles)
             .service(new::add_article)
             .service(edit::update_article)
+            .service(search::search_by_title_or_content)
+            .service(search::get_one)
+            .service(delete::delete_article)
     })
     .bind("0.0.0.0:8081")
     .unwrap()

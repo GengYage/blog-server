@@ -15,7 +15,7 @@ pub enum WebError {
 impl WebResponseError for WebError {
     fn status_code(&self) -> StatusCode {
         match self {
-            WebError::NotFound(_) => StatusCode::NOT_FOUND,
+            WebError::NotFound(_) => StatusCode::BAD_REQUEST,
             WebError::InternalServerError(_) => StatusCode::INTERNAL_SERVER_ERROR,
             WebError::BadRequest(_) => StatusCode::BAD_REQUEST,
         }

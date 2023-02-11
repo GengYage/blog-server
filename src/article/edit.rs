@@ -13,8 +13,6 @@ pub async fn update_article(
     article: Json<Article>,
     state: State<Arc<AppState>>,
 ) -> Result<impl Responder, WebError> {
-    let db_pool = &state.db_pool;
-
     let id = match article.id {
         Some(id) => id,
         None => return Err(WebError::BadRequest("请传入你要修改的文章id".into())),
@@ -26,7 +24,7 @@ pub async fn update_article(
         article.content,
         id as i64,
     )
-    .execute(db_pool)
+    .execute(&state.db_pool)
     .await?;
 
     Ok(HttpResponse::Created().body(r#"{"result": "ok"}"#))

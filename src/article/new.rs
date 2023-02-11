@@ -13,13 +13,12 @@ pub async fn add_article(
     article: Json<Article>,
     state: State<Arc<AppState>>,
 ) -> Result<impl Responder, WebError> {
-    let db_pool = &state.db_pool;
     sqlx::query!(
         "insert into articles(title, content) values ($1, $2)",
         article.title,
         article.content
     )
-    .execute(db_pool)
+    .execute(&state.db_pool)
     .await?;
 
     Ok(HttpResponse::Created().body(r#"{"result": "ok"}"#))
