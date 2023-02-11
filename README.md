@@ -36,3 +36,9 @@ execute procedure blog_article_update_timestamp();
 
 insert into articles (title, content) values ('Hello World', '测试数据');
 ```
+### api
+
+```
+GET /api/rest/articles/v1
+POST /api/rest/article/add/v1
+```

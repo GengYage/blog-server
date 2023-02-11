@@ -9,6 +9,7 @@ use ntex::{
 pub enum WebError {
     NotFound(String),
     InternalServerError(String),
+    BadRequest(String),
 }
 
 impl WebResponseError for WebError {
@@ -16,6 +17,7 @@ impl WebResponseError for WebError {
         match self {
             WebError::NotFound(_) => StatusCode::NOT_FOUND,
             WebError::InternalServerError(_) => StatusCode::INTERNAL_SERVER_ERROR,
+            WebError::BadRequest(_) => StatusCode::BAD_REQUEST,
         }
     }
 
@@ -24,6 +26,7 @@ impl WebResponseError for WebError {
             match self {
                 WebError::NotFound(e) => e,
                 WebError::InternalServerError(e) => e,
+                WebError::BadRequest(e) => e,
             }
             .into(),
         )
@@ -35,6 +38,7 @@ impl fmt::Display for WebError {
         match self {
             WebError::NotFound(e) => write!(f, "{e}"),
             WebError::InternalServerError(e) => write!(f, "{e}"),
+            WebError::BadRequest(e) => write!(f, "{e}"),
         }
     }
 }
