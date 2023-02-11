@@ -14,15 +14,14 @@ create table if not exists articles
     id          bigint primary key default nextval('blog_articles_seq'::regclass),
     title       varchar(255),
     content     text,
-    create_time timestamptz               default current_date,
-    update_time timestamptz               default current_date
+    create_time timestamp          default now(),
+    update_time timestamp          default now()
 );
-
 
 create or replace function blog_article_update_timestamp() returns trigger as
 $$
 begin
-    new.update_time = current_date;
+    new.update_time = now();
     return new;
 end
 $$
