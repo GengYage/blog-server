@@ -1,20 +1,44 @@
-use std::env;
+use std::{
+    env,
+    sync::{Arc, Mutex},
+};
 
-use errors::WebError;
-use ntex::web::{self, middleware, App, HttpServer};
+use ntex::web::{middleware, App, HttpServer};
+use sqlx::{postgres::PgPoolOptions, Pool, Postgres};
 
+use crate::article::view;
+
+mod article;
 mod errors;
+mod models;
+
+#[derive(Debug, Clone)]
+pub struct AppState {
+    pub db_pool: Pool<Postgres>,
+}
 
 #[ntex::main]
 async fn main() {
+    dotenvy::dotenv().ok();
+
     env::set_var("RUST_LOG", "ntex=info");
     env_logger::init();
 
-    HttpServer::new(|| {
+    let url = env::var("DATABASE_URL").expect("please set database_url env");
+
+    let app_state = Arc::new(Mutex::new(AppState {
+        db_pool: PgPoolOptions::new()
+            .max_connections(10)
+            .connect(&url[..])
+            .await
+            .unwrap(),
+    }));
+
+    HttpServer::new(move || {
         App::new()
+            .state(Arc::clone(&app_state))
             .wrap(middleware::Logger::default())
-            .service(index)
-            .service(error)
+            .service(view::get_articles)
     })
     .bind("0.0.0.0:8081")
     .unwrap()
@@ -23,14 +47,4 @@ async fn main() {
     .unwrap();
 
     println!("Hello, world!");
-}
-
-#[web::get("/")]
-async fn index() -> String {
-    "Hello world".into()
-}
-
-#[web::get("/error")]
-async fn error() -> Result<String, WebError> {
-    Err(WebError::NotFound("Not found".into()))
 }

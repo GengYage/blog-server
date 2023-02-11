@@ -38,3 +38,12 @@ impl fmt::Display for WebError {
         }
     }
 }
+
+impl From<sqlx::Error> for WebError {
+    fn from(value: sqlx::Error) -> Self {
+        match value {
+            sqlx::Error::RowNotFound => Self::NotFound("找不到对应的数据".into()),
+            _ => Self::InternalServerError("服务器内部错误".into()),
+        }
+    }
+}
