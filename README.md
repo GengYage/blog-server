@@ -14,8 +14,8 @@ create table if not exists articles
     id          bigint primary key default nextval('blog_articles_seq'::regclass),
     title       varchar(255),
     content     text,
-    create_time date               default current_date,
-    update_time date               default current_date
+    create_time timestamptz               default current_date,
+    update_time timestamptz               default current_date
 );
 
 
