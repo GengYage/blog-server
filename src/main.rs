@@ -8,6 +8,7 @@ use crate::article::{delete, edit, new, search, view};
 mod article;
 mod errors;
 mod models;
+mod user;
 
 #[derive(Debug, Clone)]
 pub struct AppState {
@@ -22,6 +23,9 @@ async fn main() {
     env_logger::init();
 
     let url = env::var("DATABASE_URL").expect("please set database_url env");
+    // 校验是否设置了相关环境变量,提前报错
+    let _ = env::var("CLIENT_ID").expect("please set client_id env");
+    let _ = env::var("CLIENT_SECRET").expect("please set client_secret env");
 
     let app_state = Arc::new(AppState {
         db_pool: PgPoolOptions::new()
@@ -41,6 +45,7 @@ async fn main() {
             .service(search::search_by_title_or_content)
             .service(search::get_one)
             .service(delete::delete_article)
+            .service(user::login::github_login)
     })
     .bind("0.0.0.0:8081")
     .unwrap()

@@ -7,9 +7,10 @@ edition = "2021"
 
 [dependencies]
 chrono = { version = "0.4.23", features = ["serde"] }
+cookie = "0.17.0"
 dotenvy = "0.15.6"
 env_logger = "0.10.0"
-ntex = { version = "0.6.3", features = ["cookie", "tokio"] }
+ntex = { version = "0.6.3", features = ["cookie", "tokio", "rustls"] }
 serde = { version = "1.0.152", features = ["derive"] }
 serde_json = "1.0.93"
 sqlx = { version = "0.6.2", features = [
