@@ -82,7 +82,6 @@ create table if not exists comments
 ```
 ### api
 
-```
 | 方法   | API                           | 权限 | 描述              |
 | ------ | ----------------------------- | ---- | ----------------- |
 | GET    | /api/rest/articles/v1         | User | 查询所有文章      |
@@ -94,7 +93,6 @@ create table if not exists comments
 | POST   | /api/rest/auth/login/v1       | None | 登陆oauth(github) |
 | POST   | /api/rest/comment/add/v1      | User | 增加评论          |
 | GET    | /api/rest/article/comments/v1 | None | 查询文章所有评论  |
-```
 
 ### 登陆方式
 ```
