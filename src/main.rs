@@ -3,9 +3,8 @@ use std::{env, sync::Arc};
 use ntex::web::{middleware, App, HttpServer};
 use sqlx::{postgres::PgPoolOptions, Pool, Postgres};
 
-use crate::article::{delete, edit, new, search, view};
-
 mod article;
+mod comment;
 mod errors;
 mod models;
 mod user;
@@ -39,13 +38,15 @@ async fn main() {
         App::new()
             .state(Arc::clone(&app_state))
             .wrap(middleware::Logger::default())
-            .service(view::get_articles)
-            .service(new::add_article)
-            .service(edit::update_article)
-            .service(search::search_by_title_or_content)
-            .service(search::get_one)
-            .service(delete::delete_article)
+            .service(article::view::get_articles)
+            .service(article::new::add_article)
+            .service(article::edit::update_article)
+            .service(article::search::search_by_title_or_content)
+            .service(article::search::get_one)
+            .service(article::delete::delete_article)
             .service(user::login::github_login)
+            .service(comment::new::new_comment)
+            .service(comment::view::get_all_comments)
     })
     .bind("0.0.0.0:8081")
     .unwrap()

@@ -16,8 +16,8 @@ create table if not exists articles
     id          bigint primary key default nextval('blog_articles_seq'::regclass),
     title       varchar(255),
     content     text,
-    create_time timestamp          default now(),
-    update_time timestamp          default now()
+    create_time timestamp with time zone default now(),
+    update_time timestamp with time zone default now()
 );
 
 -- 创建更新update_time的函数
@@ -48,8 +48,8 @@ create table if not exists users
     avatar_url  varchar(255),
     url         varchar(255),
     html_url    varchar(255),
-    create_time timestamp default now(),
-    update_time timestamp default now()
+    create_time timestamp with time zone default now(),
+    update_time timestamp with time zone default now()
 );
 
 -- 设置更新时间的触发器
@@ -59,17 +59,41 @@ create trigger blog_user_update_timestamp
     for each row
 execute procedure blog_article_update_timestamp();
 
+-- 创建评论自增序列
+create sequence
+    blog_comments_seq
+    increment 1
+    minvalue 1
+    maxvalue 9223372036854775807
+    start with 1
+    cache 1;
+
+-- 创建评论表
+create table if not exists comments
+(
+    id          bigint primary key       default nextval('blog_comments_seq'::regclass),
+    article_id  bigint not null,
+    user_id     bigint not null,
+    p_id        bigint null,
+    content     text,
+    create_time timestamp with time zone default now()
+);
+
 ```
 ### api
 
 ```
-GET     /api/rest/articles/v1           None    查询所有文章
-POST    /api/rest/article/add/v1        User    添加文章
-DELETE  /api/rest/article/delete/v1     User    删除文章
-POST    /api/rest/article/update/v1     User    更新文章
-GET     /api/rest/article/search/v1     None    搜索文章(搜索标题和内容)
-GET     /api/rest/article/get/v1        None    通过id查询单个文章
-POST    /api/rest/auth/login/v1         None    通过code登陆
+| 方法   | API                           | 权限 | 描述              |
+| ------ | ----------------------------- | ---- | ----------------- |
+| GET    | /api/rest/articles/v1         | User | 查询所有文章      |
+| POST   | /api/rest/article/add/v1      | User | 增加文章          |
+| DELETE | /api/rest/article/delete/v1   | User | 删除文章          |
+| POST   | /api/rest/article/update/v1   | User | 更新文章          |
+| GET    | /api/rest/article/search/v1   | None | 查询文章          |
+| GET    | /api/rest/article/get/v1      | None | 根据id查询文章    |
+| POST   | /api/rest/auth/login/v1       | None | 登陆oauth(github) |
+| POST   | /api/rest/comment/add/v1      | User | 增加评论          |
+| GET    | /api/rest/article/comments/v1 | None | 查询文章所有评论  |
 ```
 
 ### 登陆方式
