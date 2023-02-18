@@ -1,6 +1,7 @@
 use core::str;
-
 use serde::{Deserialize, Serialize};
+
+pub mod auth;
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct Login {

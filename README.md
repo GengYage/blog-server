@@ -63,11 +63,16 @@ execute procedure blog_article_update_timestamp();
 ### api
 
 ```
-GET     /api/rest/articles/v1       查询所有文章
-POST    /api/rest/article/add/v1    添加文章
-DELETE  /api/rest/article/delete/v1 删除文章
-POST    /api/rest/article/update/v1 更新文章
-GET     /api/rest/article/search/v1 搜索文章(搜索标题和内容)
-GET     /api/rest/article/get/v1    通过id查询单个文章
-POST    /api/rest/auth/login/v1     通过code登陆
+GET     /api/rest/articles/v1           None    查询所有文章
+POST    /api/rest/article/add/v1        User    添加文章
+DELETE  /api/rest/article/delete/v1     User    删除文章
+POST    /api/rest/article/update/v1     User    更新文章
+GET     /api/rest/article/search/v1     None    搜索文章(搜索标题和内容)
+GET     /api/rest/article/get/v1        None    通过id查询单个文章
+POST    /api/rest/auth/login/v1         None    通过code登陆
+```
+
+### 登陆方式
+```
+<a href="https://github.com/login/oauth/authorize?client_id={your client id}">登陆</a>
 ```

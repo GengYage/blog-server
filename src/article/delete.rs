@@ -9,10 +9,11 @@ use ntex::{
     },
 };
 
-use crate::{errors::WebError, AppState};
+use crate::{errors::WebError, models::user::auth::User, AppState};
 
 #[web::delete("/api/rest/article/delete/v1")]
 pub async fn delete_article(
+    _: User,
     state: State<Arc<AppState>>,
     query: Query<HashMap<String, i64>>,
 ) -> Result<impl Responder, WebError> {

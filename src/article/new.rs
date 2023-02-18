@@ -6,10 +6,15 @@ use ntex::web::{
     HttpResponse, Responder,
 };
 
-use crate::{errors::WebError, models::article::Article, AppState};
+use crate::{
+    errors::WebError,
+    models::{article::Article, user::auth::User},
+    AppState,
+};
 
 #[web::post("/api/rest/article/add/v1")]
 pub async fn add_article(
+    _: User,
     article: Json<Article>,
     state: State<Arc<AppState>>,
 ) -> Result<impl Responder, WebError> {
