@@ -16,6 +16,8 @@ pub struct Comment {
 pub struct CommentView {
     pub id: Option<u64>,
     pub user_id: u64,
+    pub user_name: Option<String>,
+    pub user_avatar_url: Option<String>,
     pub article_id: u64,
     pub p_id: Option<u64>,
     pub content: String,
