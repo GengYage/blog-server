@@ -13,13 +13,13 @@ use super::GithubUser;
 /// 所有用户类型,用于权限校验
 #[derive(Debug, Clone)]
 pub struct User {
-    pub access_token: String,
+    pub id: u64,
 }
 
 /// 管理员类型,用于权限校验
 #[derive(Debug, Clone)]
 pub struct Admin {
-    pub access_token: String,
+    pub id: u64,
 }
 
 impl<E: ErrorRenderer> FromRequest<E> for User {
@@ -32,10 +32,7 @@ impl<E: ErrorRenderer> FromRequest<E> for User {
             .db_pool
             .clone();
 
-        println!("===鉴权====");
-
         let access_token = req.cookie("ACCESS_TOKEN");
-        println!("==={:#?}===", &access_token);
 
         let fun = async move {
             let access_token = match access_token {
@@ -52,11 +49,10 @@ impl<E: ErrorRenderer> FromRequest<E> for User {
             {
                 // 查询不到该用户信息
                 return Err(WebError::AuthFailed("you must be login first".into()));
+            } else {
             }
 
-            Ok(Self {
-                access_token: access_token.value().to_string(),
-            })
+            Ok(Self { id: user_id })
         };
 
         Box::pin(fun)
@@ -100,9 +96,7 @@ impl<E: ErrorRenderer> FromRequest<E> for Admin {
                 return Err(WebError::AuthFailed("you must be login first".into()));
             }
 
-            Ok(Self {
-                access_token: access_token.value().to_string(),
-            })
+            Ok(Self { id: user_id })
         };
 
         Box::pin(fun)
