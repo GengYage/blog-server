@@ -99,3 +99,10 @@ create table if not exists comments
 ```
 <a href="https://github.com/login/oauth/authorize?client_id={your client id}">登陆</a>
 ```
+### 环境变量
+```
+DATABASE_URL=postgres://localhost:5432/yage
+CLIENT_ID=
+CLIENT_SECRET=
+ADMIN_ID=
+```
