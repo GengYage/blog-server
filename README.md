@@ -93,6 +93,7 @@ create table if not exists comments
 | POST   | /api/rest/auth/login/v1       | None | 登陆oauth(github) |
 | POST   | /api/rest/comment/add/v1      | User | 增加评论          |
 | GET    | /api/rest/article/comments/v1 | None | 查询文章所有评论  |
+| DELETE | /api/rest/comment/delete/v1   | User | 删除评论          |
 
 ### 登陆方式
 ```
